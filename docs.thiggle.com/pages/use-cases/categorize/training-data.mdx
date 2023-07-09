@@ -1,0 +1,13 @@
+#### Labeling Training Data
+You can use the categorization API to label text for training data. For example, you could use it to label text for a text classifier. This example bins text into different buckets: ['finance', 'sports', 'politics', 'science', 'technology', 'entertainment', 'health', 'other'].
+```json
+{
+  "prompt": "What category does this text belong to? Text: The Dow Jones Industrial Average fell 200 points on Monday.",
+  "categories": ["finance", "sports", "politics", "science", "technology", "entertainment", "health", "other"]
+}
+```
+```json
+{
+  "choices": ["finance"]
+}
+```

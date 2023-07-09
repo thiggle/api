@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "thiggle"
+version = "0.0.2"
+description = "A Python library for interacting with the Thiggle API."
+authors = ["Matt Rickard <pypi@matt-rickard.com>"]
+maintainers = ["Matt Rickard <pypi@matt-rickard.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+keywords = [
+  "llm",
+  "ai",
+  "prompt",
+  "large language models",
+  "gpt-3",
+  "chatgpt",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Linguistic",
+]
+urls = { repository = "https://github.com/thiggle/api" }
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+requests = "^2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

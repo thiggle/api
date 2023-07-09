@@ -1,0 +1,158 @@
+import { Tab, Tabs } from 'nextra-theme-docs'
+
+export const baseURL = 'https://thiggle.com/api'
+
+### The Categorization API
+
+Thiggle's categorization API is a simple API that uses LLMs to categorize anything based on a prompt. It always returns structured JSON, and only returns the categories that you provide. Some example use cases include:
+* [Building block for building higher-level AI agents](#ai-agents)
+* [Answering multiple choice questions](#multiple-choice-questions)
+* [Labeling training data](#labeling-training-data)
+* [Sentiment analysis](#sentiment-analysis)
+
+### Quickstart
+
+Thiggle ships with clients in Python, Go, and TypeScript, but it's also easy to use with cURL. You can get your API key from the [dashboard](https://thiggle.com/account).
+
+<Tabs items={['cURL', 'Python', 'TypeScript', 'Go']}>
+<Tab>
+  ```bash copy
+  curl -X POST "https://thiggle.com/api/v1/categorize" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $THIGGLE_API_KEY" \
+     -d '{
+         "prompt": "What animal barks?",
+         "categories": ["Dog", "Cat", "Bird", "Fish"]
+     }'
+  ```
+  </Tab>
+<Tab>
+```bash copy
+pip install thiggle
+```
+
+ ```python copy
+import thiggle as tg
+
+api = tg.API(os.getenv("THIGGLE_API_KEY"))
+response = api.categorize("What animal barks?", ["dog", "cat", "bird", "fish"])
+print(response)
+  ```
+  </Tab>
+  <Tab>
+  <Tabs items={['npm', 'yarn', 'pnpm']}>
+  <Tab>
+```bash copy
+npm install @thiggle/client
+```
+</Tab>
+<Tab>
+```bash copy
+yarn add @thiggle/client
+```
+</Tab>
+<Tab>
+```bash copy
+pnpm add @thiggle/client
+```
+</Tab>
+</Tabs>
+
+  ```typescript copy
+  import Thiggle from '@thiggle/client';
+
+  const api = new Thiggle(process.env.THIGGLE_API_KEY);
+  const response = await api.categorize("What animal barks?", ["dog", "cat", "bird", "fish"]);
+  console.log(response);
+  ```
+  </Tab>
+  <Tab>
+  ```bash copy
+  go get -u github.com/thiggle/api
+  ```
+
+  ```go copy
+  package main
+
+  import (
+    "fmt"
+    "os"
+
+    "github.com/thiggle/api"
+  )
+
+  func main() {
+    client := api.NewClient(os.Getenv("THIGGLE_API_KEY"))
+    response, err := client.Categorize("What animal barks?", []string{"dog", "cat", "bird", "fish"})
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(response)
+  }
+  ```
+  </Tab>
+</Tabs>
+
+### Examples
+
+#### AI Agents
+Use the categorization API to choose the relevant tools to complete the task. Use this as a reliable building block for higher-order AI agents. Never worry about the API returning extraneous text or unknown categories that break your agent.
+```json
+{
+  "prompt": "What tools do I need to complete the following task? Task: find the best restaurant in San Francisco. Tools:",
+  "categories": ["google-maps-api", "python-repl", "calculator", "yelp-api", "ffmpeg"]
+}
+```
+```json
+{
+  "choices": ["google-maps-api", "yelp-api"]
+}
+```
+#### Multiple-Choice Questions
+Answer multiple-choice questions. For questions with more than one correct answer, use the `allow_multiple_classes` flag. 
+```json
+{
+  "prompt": "What animals have four legs?",
+  "categories": ["cat", "dog", "bird", "fish", "elephant", "snake"],
+  "allow_multiple_classes": true,
+}
+```
+```json
+{
+  "choices": ["cat", "dog", "elephant"]
+}
+```
+
+#### Labeling Training Data
+You can use the categorization API to label text for training data. For example, you could use it to label text for a text classifier. This example bins text into different buckets: ['finance', 'sports', 'politics', 'science', 'technology', 'entertainment', 'health', 'other'].
+```json
+{
+  "prompt": "What category does this text belong to? Text: The Dow Jones Industrial Average fell 200 points on Monday.",
+  "categories": ["finance", "sports", "politics", "science", "technology", "entertainment", "health", "other"]
+}
+```
+```json
+{
+  "choices": ["finance"]
+}
+```
+
+
+#### Sentiment Analysis
+Classify any text into sentiment classes. 
+
+```json
+{
+  "prompt": "Is this a positive or negative review of Star Wars?
+		The more one sees the main characters, the less appealing they become.
+		Luke Skywalker is a whiner, Han Solo a sarcastic clod, Princess Leia a nag, and C-3PO just a drone.",
+  "categories": ["positive", "negative"]
+}
+```
+```json
+{
+  "choices": ["negative"]
+}
+```
+
+Use any sentiment categories you like. For example, you could use `["positive", "neutral", "negative"]` or `["positive", "negative", "very positive", "very negative"]`. Or even `["happy", "sad", "angry", "surprised", "disgusted", "fearful"]`.

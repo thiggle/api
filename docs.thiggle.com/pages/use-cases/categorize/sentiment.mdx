@@ -1,0 +1,18 @@
+#### Sentiment Analysis
+Classify any text into sentiment classes. 
+
+```json
+{
+  "prompt": "Is this a positive or negative review of Star Wars?
+		The more one sees the main characters, the less appealing they become.
+		Luke Skywalker is a whiner, Han Solo a sarcastic clod, Princess Leia a nag, and C-3PO just a drone.",
+  "categories": ["positive", "negative"]
+}
+```
+```json
+{
+  "choices": ["negative"]
+}
+```
+
+Use any sentiment categories you like. For example, you could use `["positive", "neutral", "negative"]` or `["positive", "negative", "very positive", "very negative"]`. Or even `["happy", "sad", "angry", "surprised", "disgusted", "fearful"]`.

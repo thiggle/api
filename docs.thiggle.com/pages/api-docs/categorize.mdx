@@ -1,0 +1,64 @@
+# v1/categorize
+
+
+This endpoint provides a categorization function based on the given input. It supports various categorization modes through different parameters.
+
+## Request: `POST /v1/categorize`
+
+### Headers
+
+- `Content-Type: application/json`
+- `Authorization: Bearer <your_api_key>`
+
+### Body
+
+The request accepts a JSON body with the following properties:
+
+| Field                   | Type     | Description                                                 | Required |
+|-------------------------|----------|-------------------------------------------------------------|----------|
+| `prompt`                | string   | The input text that needs to be categorized.                | Yes      |
+| `categories`            | string[] | The categories to use for categorization.                   | Yes      |
+| `allow_null_category`   | boolean  | If set to true, allows uncategorized entries.               | No       |
+| `allow_multiple_classes`| boolean  | If set to true, allows entries to belong to multiple categories. | No       |
+
+#### Example
+
+```json
+{
+  "prompt": "Sample prompt text",
+  "categories": ["category1", "category2", "category3"],
+  "allow_null_category": true,
+  "allow_multiple_classes": false
+}
+```
+
+## Response
+
+The response from the server includes the following fields:
+
+| Field     | Type     | Description                                                 |
+|-----------|----------|-------------------------------------------------------------|
+| `choices` | string[] | The categories chosen for the given prompt.                 |
+
+If there was a problem with the request, you will receive an error message instead.
+
+#### Example
+
+```json
+{
+  "choices": ["category1", "category2"]
+}
+```
+
+## Error Handling
+
+In case of a bad request or authentication error, you will receive an HTTP status code other than 200, and a descriptive error message.
+
+#### Example
+
+```json
+{
+  "error": "Invalid API Key provided.",
+  "code": 401
+}
+```

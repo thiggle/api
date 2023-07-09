@@ -1,0 +1,30 @@
+# Authentication
+
+### API Keys
+To get started, you'll need an API key. You can get one by signing up for an account at [https://thiggle.com](https://thiggle.com). Once you create an account, you generate API keys on your [account page](https://thiggle.com/account). Set the `THIGGLE_API_KEY` environment variable to your API key.
+
+```bash
+export THIGGLE_API_KEY=your-api-key
+```
+
+If you are using a client library, you can pass the API key as a parameter to the client constructor. If you are using the REST API directly, you can pass the API key in the `Authorization` header (be sure to include the `Bearer` prefix).
+
+  ```bash copy
+  curl -X POST "https://api.thiggle.com/v1/categorize" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $THIGGLE_API_KEY" \
+     -d '{
+         "prompt": "What animal barks?",
+         "categories": ["Dog", "Cat", "Bird", "Fish"]
+     }'
+  ```
+
+### Rate Limits
+
+The API is rate limited to 100 requests per minute. If you exceed this limit, you will receive a `429 Too Many Requests` response. If you need a higher rate limit, please contact us at [quota@thiggle.com](mailto:quota@thiggle.com).
+
+Your current rate limit usage is returned in the `X-RateLimit-Remaining` header. If you are using a client library, you can use this to determine when you are approaching the rate limit.
+
+### Quota
+
+Quotas are determined by your current plan. You can view your current plan on your [account page](https://thiggle.com/account). The quota is reset at the beginning of each month. If you exceed your quota, you will receive a `402 Payment Required` response. Your current quota usage is returned in the `X-Quota-Remaining` header. If you are using a client library, you can use this to determine when you are approaching your quota.

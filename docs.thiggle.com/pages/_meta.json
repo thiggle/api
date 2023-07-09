@@ -1,0 +1,12 @@
+{
+  "index": "Introduction",
+  "auth": "Authentication",
+  "api-docs": "API Documentation",
+  "use-cases": "Use Cases",
+  "contact": {
+    "title": "thiggle.com ↗",
+    "type": "page",
+    "href": "https://thiggle.com",
+    "newWindow": true
+  }
+}
