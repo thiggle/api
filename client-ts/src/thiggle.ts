@@ -11,6 +11,22 @@ export type CategorizeResponse = {
     choices: string[];
 };
 
+export type RegexCompletionRequest = {
+    prompt: string;
+    patterns: string[]; // assuming patterns is an array of regex strings
+    max_new_tokens?: number;
+    stop_after_match?: boolean;
+    temperature?: number;
+    top_p?: number;
+    top_k?: number;
+    repetition_penalty?: number;
+};
+
+export type RegexCompletionResponse = {
+    completion: string;
+    tokens_generated: number;
+};
+
 class Thiggle {
     private baseUrl: string;
     private apiKey: string;
@@ -20,8 +36,8 @@ class Thiggle {
         this.apiKey = apiKey;
     }
 
-    async categorize(request: CategorizeRequest): Promise<CategorizeResponse> {
-        const response = await fetch(`${this.baseUrl}/v1/categorize`, {
+    private async makeRequest<T>(endpoint: string, request: any): Promise<T> {
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +51,15 @@ class Thiggle {
             throw new Error(`API request failed with status ${response.status}`);
         }
 
-        return response.json() as Promise<CategorizeResponse>;
+        return response.json() as Promise<T>;
+    }
+
+    async categorize(request: CategorizeRequest): Promise<CategorizeResponse> {
+        return this.makeRequest<CategorizeResponse>('/v1/categorize', request);
+    }
+
+    async regexCompletion(request: RegexCompletionRequest): Promise<RegexCompletionResponse> {
+        return this.makeRequest<RegexCompletionResponse>('/v1/completion/regex', request);
     }
 }
 

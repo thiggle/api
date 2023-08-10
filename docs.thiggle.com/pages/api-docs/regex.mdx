@@ -1,0 +1,73 @@
+# v1/completion/regex
+
+This endpoint provides LLM completions that match specified regex patterns. It is an enhanced way of generating completions based on regular expression constraints.
+
+### Request: `POST /v1/completion/regex`
+
+### Headers
+
+- `Content-Type: application/json`
+- `Authorization: Bearer <your_api_key>`
+
+### Body
+
+The request accepts a JSON body with the following properties:
+
+| Field               | Type                     | Description                                                                                          | Required |
+|---------------------|--------------------------|------------------------------------------------------------------------------------------------------|----------|
+| `prompt`            | string                   | The prompt to generate from.                                                                         | Yes      |
+| `patterns`          | string or string[]       | A single regex pattern or list of regex patterns to match.                                           | Yes      |
+| `max_new_tokens`    | integer                  | The maximum number of tokens to generate. Defaults to 5.                                             | No       |
+| `stop_after_match`  | boolean                  | Whether to stop generating after a match is found. Defaults to True.                                 | No       |
+| `top_k`             | integer                  | The number of highest probability vocabulary tokens to keep for top-k-filtering. Defaults to 50.     | No       |
+| `top_p`             | float                    | If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. Defaults to 1.0. | No       |
+| `temperature`       | float                    | The value used to modulate the next token probabilities. Defaults to 1.0.                            | No       |
+| `repetition_penalty`| float                    | The parameter for repetition penalty. 1.0 means no penalty. See this [paper](https://arxiv.org/pdf/1909.05858.pdf) for more details. Defaults to 1.0. | No       |
+
+#### Example
+
+```json
+{
+  "prompt": "This is a sample prompt",
+  "patterns": ["^sample.*", ".*prompt$"],
+  "max_new_tokens": 10,
+  "stop_after_match": false,
+  "top_k": 50,
+  "top_p": 0.9,
+  "temperature": 0.8,
+  "repetition_penalty": 1.2
+}
+```
+
+## Response
+
+The response from the server includes the completion data which matches the given patterns.
+
+If there was a problem with the request, you will receive an error message instead.
+
+### Fields
+
+| Field             | Type     | Description                                   |
+|-------------------|----------|-----------------------------------------------|
+| `completion`      | string   | The generated text that matches the patterns. |
+| `tokens_generated`| integer  | Number of tokens generated in the response.   |
+
+#### Example
+
+```json
+{
+  "completion": "sample response matching prompt",
+  "tokens_generated": 5
+}
+```
+
+### Error Handling
+
+In case of a bad request or authentication error, you will receive an HTTP status code other than 200, and a descriptive error message.
+
+```json
+{
+  "error": "Invalid API Key provided.",
+  "code": 401
+}
+```

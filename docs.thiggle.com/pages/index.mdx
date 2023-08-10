@@ -2,6 +2,111 @@ import { Tab, Tabs } from 'nextra-theme-docs'
 
 export const baseURL = 'https://thiggle.com/api'
 
+Thiggle is a set of specialized and structured LLM APIs.
+
+- [Categorization API](#the-categorization-api)
+- [Structured Completion APIs](#structured-completion-apis)
+
+### Structured Completion APIs
+
+#### Regex Completion API
+
+Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex patterns provided.
+
+#### Regex Completion Quickstart
+
+We'll use the prompt "Thiggle, the specialized and structured LLM API is an acronym for " and a regex pattern to generate the acronym. We'll also set `max_new_tokens` to 20 to limit the output to 20 tokens. The regex pattern that corresponds to a potential acronym is `T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+`. For a refresher on regex, [a-z] matches any lowercase letter, and + means one or more of the preceding token. So, `T[a-z]+` matches any string that starts with a capital T and is followed by one or more lowercase letters.
+
+<Tabs items={['cURL', 'Python', 'TypeScript', 'Go']}>
+<Tab>
+```bash
+curl -X POST "https://thiggle.com/api/v1/regex-completion" \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer $THIGGLE_API_KEY" \
+   -d '{
+       "prompt": "Thiggle, the specialized and structured LLM API is an acronym for ",
+       "patterns": "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+",
+       "max_new_tokens": 20
+   }'
+```
+</Tab>
+<Tab>
+```bash
+pip install thiggle
+```
+
+```python
+import thiggle as tg
+
+api = tg.API(os.getenv("THIGGLE_API_KEY"))
+response = api.regex_completion("Thiggle, the specialized and structured LLM API is an acronym for ", "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+", 20)
+print(response)
+```
+</Tab>
+<Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+<Tab>
+```bash
+npm install @thiggle/client
+```
+</Tab>
+<Tab>
+```bash
+yarn add @thiggle/client
+```
+</Tab>
+<Tab>
+```bash
+pnpm add @thiggle/client
+```
+</Tab>
+</Tabs>
+
+```typescript
+import Thiggle from '@thiggle/client';
+
+const api = new Thiggle(process.env.THIGGLE_API_KEY);
+const response = await api.regexCompletion("Thiggle, the specialized and structured LLM API is an acronym for ", "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+", 20);
+console.log(response);
+```
+</Tab>
+<Tab>
+```bash
+go get -u github.com/thiggle/api
+```
+
+```go
+package main
+
+import (
+  "fmt"
+  "os"
+
+  "github.com/thiggle/api"
+)
+
+func main() {
+  client := api.NewClient(os.Getenv("THIGGLE_API_KEY"))
+  response, err := client.RegexCompletion("Thiggle, the specialized and structured LLM API is an acronym for ", "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+", 20)
+  if err != nil {
+    panic(err)
+  }
+  fmt.Println(response)
+}
+```
+</Tab>
+</Tabs>
+
+```json 
+{
+  "completion": "Transformers Hugging Inference Generally Greatly Libraries Engine", 
+  "tokens_generated": 15
+}
+```
+
+
+
+
 ### The Categorization API
 
 Thiggle's categorization API is a simple API that uses LLMs to categorize anything based on a prompt. It always returns structured JSON, and only returns the categories that you provide. Some example use cases include:
@@ -10,7 +115,7 @@ Thiggle's categorization API is a simple API that uses LLMs to categorize anythi
 * [Labeling training data](#labeling-training-data)
 * [Sentiment analysis](#sentiment-analysis)
 
-### Quickstart
+#### Categorization Quickstart
 
 Thiggle ships with clients in Python, Go, and TypeScript, but it's also easy to use with cURL. You can get your API key from the [dashboard](https://thiggle.com/account).
 
@@ -93,9 +198,9 @@ pnpm add @thiggle/client
   </Tab>
 </Tabs>
 
-### Examples
+#### Examples
 
-#### AI Agents
+##### AI Agents
 Use the categorization API to choose the relevant tools to complete the task. Use this as a reliable building block for higher-order AI agents. Never worry about the API returning extraneous text or unknown categories that break your agent.
 ```json
 {
@@ -108,7 +213,7 @@ Use the categorization API to choose the relevant tools to complete the task. Us
   "choices": ["google-maps-api", "yelp-api"]
 }
 ```
-#### Multiple-Choice Questions
+##### Multiple-Choice Questions
 Answer multiple-choice questions. For questions with more than one correct answer, use the `allow_multiple_classes` flag. 
 ```json
 {
@@ -123,7 +228,7 @@ Answer multiple-choice questions. For questions with more than one correct answe
 }
 ```
 
-#### Labeling Training Data
+##### Labeling Training Data
 You can use the categorization API to label text for training data. For example, you could use it to label text for a text classifier. This example bins text into different buckets: ['finance', 'sports', 'politics', 'science', 'technology', 'entertainment', 'health', 'other'].
 ```json
 {
@@ -138,7 +243,7 @@ You can use the categorization API to label text for training data. For example,
 ```
 
 
-#### Sentiment Analysis
+##### Sentiment Analysis
 Classify any text into sentiment classes. 
 
 ```json

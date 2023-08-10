@@ -1,0 +1,17 @@
+### Typed Output
+Constrain output to strings, numbers, booleans, or other primitive types.
+
+#### Sample Request
+```json
+{
+    "prompt": "I can eat",
+    "patterns": "[0-9]{1,10} [a-z]* of [a-z]*"
+}
+```
+
+#### Sample Response 
+```json
+{
+    "completion": "800 calories of coffee",
+    "tokens_generated": 9
+}
