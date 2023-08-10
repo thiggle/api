@@ -1,5 +1,20 @@
 ## [thiggle.com](https://thiggle.com) API
 
+Structured LLM APIs that always return deterministic results.
+
+- [LLM Regex Completion API](#regex-completion-api)
+- [LLM Categorization API](#categorization-api)
+
+### Regex Completion API
+
+* **Regex Constraint**: Generate LLM output that always matches one or more regex patterns.
+* **Deterministic**: Never returns unexpected or unparsable results.
+
+Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex patterns provided.
+
+### Categorization API
+
+
 A simple structured API to run categorization tasks with an LLM. 
 
 * **Zero Parsing**: Always returns structured JSON with only your categories
