@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "thiggle"
-version = "0.0.3"
+version = "0.0.4"
 description = "A Python library for interacting with the Thiggle API."
 authors = ["Matt Rickard <pypi@matt-rickard.com>"]
 maintainers = ["Matt Rickard <pypi@matt-rickard.com>"]

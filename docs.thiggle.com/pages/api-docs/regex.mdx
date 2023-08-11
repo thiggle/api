@@ -51,13 +51,16 @@ If there was a problem with the request, you will receive an error message inste
 |-------------------|----------|-----------------------------------------------|
 | `completion`      | string   | The generated text that matches the patterns. |
 | `tokens_generated`| integer  | Number of tokens generated in the response.   |
+| `stop_reason`      | string  | The reason the generation was stopped, if applicable. Either `pattern_match` or `token_limit`.           |
+
 
 #### Example
 
 ```json
 {
   "completion": "sample response matching prompt",
-  "tokens_generated": 5
+  "tokens_generated": 5,
+  "stop_reason": "pattern_match"
 }
 ```
 

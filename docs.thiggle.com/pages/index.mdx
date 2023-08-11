@@ -9,6 +9,9 @@ Thiggle is a set of specialized and structured LLM APIs.
 
 ### Structured Completion APIs
 
+- [Regex Completion API](#regex-completion-api)
+- [Context-Free Grammar Completion API](#context-free-grammar-completion-api)
+
 #### Regex Completion API
 
 Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex patterns provided.
@@ -104,8 +107,57 @@ func main() {
 }
 ```
 
+### Context-Free Grammar Completion API
 
+Given a prompt and a context-free grammar, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the context-free grammar provided.
 
+#### Context-Free Grammar Completion Quickstart
+
+In this example, we'll define a [LALR grammar in Lark format](https://lark-parser.readthedocs.io/en/latest/grammar.html) for specifying palindromes (strings that reads the same backwards and forwards). 
+
+(Remembering your computational theory, generating arbitrary-length palindromes is impossible with just regular expressions)
+
+```python
+import os
+import thiggle as tg
+
+# Create an API object with your API key
+api = tg.API(os.getenv("THIGGLE_API_KEY"))
+grammar = """
+start: palindrome
+palindrome: 	letter
+		| "a" palindrome "a"
+		| "b" palindrome "b"
+		| "c" palindrome "c"
+		| "d" palindrome "d"
+		| "e" palindrome "e"
+		| "f" palindrome "f"
+		| "g" palindrome "g"
+		| "h" palindrome "h"
+		| "i" palindrome "i"
+		| "j" palindrome "j"
+		| "k" palindrome "k"
+		| "l" palindrome "l"
+		| "m" palindrome "m"
+		| "n" palindrome "n"
+		| "p" palindrome "p"
+		| "q" palindrome "q"
+		| "r" palindrome "r"
+		| "s" palindrome "s"
+		| "t" palindrome "t"
+		| "u" palindrome "u"
+		| "v" palindrome "v"
+		| "w" palindrome "w"
+		| "x" palindrome "x"
+		| "y" palindrome "y"
+		| "z" palindrome "z"
+
+letter: "a".."z"
+"""
+prompt = "Generate a palindrome: "
+response = api.cfg_completion(prompt, grammar, max_new_tokens=15)
+print(response)
+```
 
 ### The Categorization API
 

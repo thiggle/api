@@ -11,9 +11,26 @@ export type CategorizeResponse = {
     choices: string[];
 };
 
+export type ContextFreeCompletionRequest = {
+    prompt: string;
+    grammar: string;
+    max_new_tokens?: number;
+    stop_after_match?: boolean;
+    temperature?: number;
+    top_p?: number;
+    top_k?: number;
+    repetition_penalty?: number;
+};
+
+export type ContextFreeCompletionResponse = {
+    completion: string;
+    tokens_generated: number;
+    stop_reason: string;
+};
+
 export type RegexCompletionRequest = {
     prompt: string;
-    patterns: string[]; // assuming patterns is an array of regex strings
+    patterns: string[];
     max_new_tokens?: number;
     stop_after_match?: boolean;
     temperature?: number;
@@ -25,6 +42,7 @@ export type RegexCompletionRequest = {
 export type RegexCompletionResponse = {
     completion: string;
     tokens_generated: number;
+    stop_reason: string;
 };
 
 class Thiggle {
@@ -60,6 +78,10 @@ class Thiggle {
 
     async regexCompletion(request: RegexCompletionRequest): Promise<RegexCompletionResponse> {
         return this.makeRequest<RegexCompletionResponse>('/v1/completion/regex', request);
+    }
+
+    async contextFreeCompletion(request: ContextFreeCompletionRequest): Promise<ContextFreeCompletionResponse> {
+        return this.makeRequest<ContextFreeCompletionResponse>('/v1/completion/cfg', request);
     }
 }
 

@@ -26,14 +26,37 @@ type CategorizeResponse struct {
 }
 
 type RegexCompletionRequest struct {
-	Prompt       string   `json:"prompt"`
-	Patterns     []string `json:"patterns"`
-	MaxNewTokens int      `json:"max_new_tokens,omitempty"`
+	Prompt            string   `json:"prompt"`
+	Patterns          []string `json:"patterns"`
+	MaxNewTokens      int      `json:"max_new_tokens,omitempty"`
+	TopP              float64  `json:"top_p,omitempty"`
+	TopK              int      `json:"top_k,omitempty"`
+	Temperature       float64  `json:"temperature,omitempty"`
+	StopAfterMatch    Bool     `json:"stop_after_match,omitempty"`
+	RepetitionPenalty float64  `json:"repetition_penalty,omitempty"`
 }
 
 type RegexCompletionResponse struct {
 	Completion      string `json:"completion"`
 	TokensGenerated int    `json:"tokens_generated"`
+	StopReason      string `json:"stop_reason"`
+}
+
+type ContextFreeCompletionRequest struct {
+	Prompt            string  `json:"prompt"`
+	Grammar           string  `json:"grammar"`
+	MaxNewTokens      int     `json:"max_new_tokens,omitempty"`
+	TopP              float64 `json:"top_p,omitempty"`
+	TopK              int     `json:"top_k,omitempty"`
+	Temperature       float64 `json:"temperature,omitempty"`
+	StopAfterMatch    Bool    `json:"stop_after_match,omitempty"`
+	RepetitionPenalty float64 `json:"repetition_penalty,omitempty"`
+}
+
+type ContextFreeCompletionResponse struct {
+	Completion      string `json:"completion"`
+	TokensGenerated int    `json:"tokens_generated"`
+	StopReason      string `json:"stop_reason"`
 }
 
 type Client struct {
@@ -49,12 +72,17 @@ func NewClient(apiKey string) *Client {
 }
 
 const (
-	routeRegexCompletion = "/v1/completion/regex"
-	routeCategorize      = "/v1/categorize"
+	routeRegexCompletion       = "/v1/completion/regex"
+	routeContextFreeCompletion = "/v1/completion/cfg"
+	routeCategorize            = "/v1/categorize"
 )
 
 func (c *Client) RegexCompletion(ctx context.Context, req *RegexCompletionRequest) (*RegexCompletionResponse, error) {
 	return post[RegexCompletionRequest, RegexCompletionResponse](ctx, c, routeRegexCompletion, req)
+}
+
+func (c *Client) ContextFreeCompletion(ctx context.Context, req *ContextFreeCompletionRequest) (*ContextFreeCompletionResponse, error) {
+	return post[ContextFreeCompletionRequest, ContextFreeCompletionResponse](ctx, c, routeContextFreeCompletion, req)
 }
 
 func (c *Client) Categorize(ctx context.Context, req *CategorizeRequest) (*CategorizeResponse, error) {

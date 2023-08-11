@@ -1,4 +1,5 @@
 {
   "categorize": "v1/categorize",
-  "regex": "v1/completion/regex"
+  "regex": "v1/completion/regex",
+  "cfg": "v1/completion/cfg"
 }

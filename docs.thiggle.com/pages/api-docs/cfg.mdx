@@ -1,0 +1,59 @@
+# /v1/completion/cfg
+
+This endpoint generates Language Model completions that match a given Context-Free Grammar (CFG) rule. It allows fine-grained control over the completion process through various parameters.
+
+### Request: `POST /v1/completion/cfg`
+
+### Headers
+
+- `Content-Type: application/json`
+- `Authorization: Bearer <your_api_key>`
+
+### Body
+
+The request accepts a JSON body with the following properties:
+
+| Field                | Type    | Description                                                                                          | Required |
+|----------------------|---------|------------------------------------------------------------------------------------------------------|----------|
+| `prompt`             | string  | The prompt to generate from.                                                                         | Yes      |
+| `grammar`            | string  | A single CFG grammar rule to match.                                                                  | Yes      |
+| `max_new_tokens`     | integer | The maximum number of tokens to generate. Defaults to 5.                                             | No       |
+| `stop_after_match`   | boolean | Whether to stop generating after a match is found. Defaults to true.                                 | No       |
+| `top_k`              | integer | The number of highest probability vocabulary tokens to keep for top-k-filtering. Defaults to 50.     | No       |
+| `top_p`              | float   | If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. Defaults to 1.0. | No       |
+| `temperature`        | float   | The value used to modulate the next token probabilities. Defaults to 1.0.                             | No       |
+| `repetition_penalty` | float   | The parameter for repetition penalty. 1.0 means no penalty. More details [here](https://arxiv.org/pdf/1909.05858.pdf). Defaults to 1.0. | No       |
+
+#### Example
+
+```json
+{
+  "prompt": "Start your text here",
+  "grammar": "<start> ::= <noun> <verb> | <verb> <noun>",
+  "max_new_tokens": 10,
+  "stop_after_match": false,
+  "top_k": 30,
+  "top_p": 0.9,
+  "temperature": 1.2,
+  "repetition_penalty": 0.8
+}
+```
+
+## Response
+
+The response from the server includes the following fields:
+
+| Field              | Type    | Description                                                     |
+|--------------------|---------|-----------------------------------------------------------------|
+| `completion`       | string  | The generated completion that matches the given CFG grammar rule.|
+| `tokens_generated` | number  | The number of tokens generated in the completion.               |
+| `stop_reason`      | string  | The reason the generation was stopped, if applicable. Either `pattern_match` or `token_limit`.           |
+
+#### Example
+
+```json
+{
+  "completion": "noun verb",
+  "tokens_generated": 2,
+  "stop_reason": "pattern_match"
+}

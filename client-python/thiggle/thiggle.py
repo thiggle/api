@@ -91,3 +91,49 @@ class API:
             return response.json()
         else:
             response.raise_for_status()
+
+    def cfg_completion(self,
+                       prompt,
+                       grammar,
+                       max_new_tokens=5,
+                       stop_after_match=True,
+                       temperature=1.0,
+                       top_p=1.0,
+                       top_k=50,
+                       repetition_penalty=1.0,
+                       ):
+        """
+        Generate LLM completions that match CFG grammar rules.
+
+        :param prompt:  The prompt to generate from.
+        :param grammar:  A single CFG grammar rule to match.
+        :param max_new_tokens:  The maximum number of tokens to generate. Defaults to 5.
+        :param stop_after_match:  Whether to stop generating after a match is found. Defaults to True.
+        :param top_k:  The number of highest probability vocabulary tokens to keep for top-k-filtering. Defaults to 50.
+        :param top_p:  If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. Defaults to 1.0.
+        :param temperature:  The value used to modulate the next token probabilities. Defaults to 1.0.
+        :param repetition_penalty:  The parameter for repetition penalty. 1.0 means no penalty. See this https://arxiv.org/pdf/1909.05858.pdf for more details. Defaults to 1.0.
+
+        """
+        payload = {
+            "prompt": prompt,
+            "grammar": grammar,
+            "max_new_tokens": max_new_tokens,
+            "stop_after_match": stop_after_match,
+            "temperature": temperature,
+            "top_p": top_p,
+            "top_k": top_k,
+            "repetition_penalty": repetition_penalty
+        }
+
+        response = requests.post(
+            f'{self.base_url}/v1/completion/cfg',
+            headers=self.headers,
+            data=json.dumps(payload)
+        )
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
