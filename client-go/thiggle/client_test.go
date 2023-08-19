@@ -18,9 +18,7 @@ func TestMain(m *testing.M) {
 
 func TestIntegrationCompletion(t *testing.T) {
 	req := &CompletionRequest{
-		Prompt: "the input is 10 tokens long, really!",
-		// Model:  MustNewStringOrSlice("gpt-4"),
-		// Model: MustNewStringOrSlice([]string{"gpt-4", "gpt-4-0613", "gpt-4-0314"}),
+		Prompt:      "the input is 10 tokens long, really!",
 		Model:       MustNewStringOrSlice([]string{"llama-2-70b-chat", "text-davinci-003"}),
 		MaxTokens:   10,
 		Temperature: 0.5,

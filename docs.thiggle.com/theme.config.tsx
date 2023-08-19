@@ -22,6 +22,13 @@ const config: DocsThemeConfig = {
       titleTemplate: "%s – Thiggle Docs",
     };
   },
+  head: (
+    <>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta property="og:title" content="Thiggle API Docs" />
+      <meta property="og:description" content="Structured LLM APIs" />
+    </>
+  ),
 };
 
 export default config;
