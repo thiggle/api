@@ -1,6 +1,6 @@
 {
   "name": "@thiggle/client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A TypeScript client for the Thiggle API",
   "type": "module",
   "main": "dist/index.js",
