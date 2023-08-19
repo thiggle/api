@@ -2,8 +2,37 @@
 
 Structured LLM APIs that always return deterministic results.
 
-- [LLM Regex Completion API](#regex-completion-api)
-- [LLM Categorization API](#categorization-api)
+- [LLM Model API Gateway](#llm-model-api-gateway) -- Call over 20+ LLMs with a single API
+- [LLM Regex Completion API](#regex-completion-api) -- Generate LLM output that always matches a regex pattern
+- [LLM Context-Free Grammar Completion API](#context-free-grammar-completion-api) -- Generate LLM output that always matches a context-free grammar
+- [LLM Categorization API](#categorization-api) -- A simple structured API to run categorization tasks with an LLM
+
+### Model API Gateway
+
+Call over 20+ LLM models with a single API from Llama 2, GPT-4, Cohere, and more.
+
+* Single API to inference over 20+ LLMs. Llama 2, GPT-4, Cohere, StableLM and more.
+* Same price as direct inference. No upcharge.
+* Drop-in compatible with OpenAI clients. Just change one line of code.
+* One API key. Never give up your OpenAI credentials. 
+
+If you’re already using the OpenAI Python APIs, you can switch 
+```
+openai.api_base = 'https://api.thiggle.com/v1/'
+```
+
+Otherwise, you can use the client libraries provided here, or a simple cURL command.
+
+```bash
+curl -X POST "https://api.thiggle.com/v1/completion" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $THIGGLE_API_KEY" \
+     -d '{
+         "prompt": "What animal barks?",
+         "max_new_tokens": 10,
+         "model": ["llama-2-70b-chat", "gpt-4"]
+     }'
+```
 
 ### Regex Completion API
 
@@ -97,6 +126,14 @@ func main() {
     fmt.Println(response)
 }
 ```
+
+### Context-Free Grammar Completion API
+
+Given a prompt and a context-free grammar, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the context-free grammar provided.
+
+Grammars must be LALR grammars in Lark format. See the [lark-parser](https://lark-parser.readthedocs.io/en/latest/grammar.html).
+
+See [docs.thiggle.com](https://docs.thiggle.com/#context-free-grammar-completion-api) for more information and examples.
 
 ### API Keys
 To get started, you'll need an API key. You can get one by signing up for an account at [https://thiggle.com](https://thiggle.com). Once you create an account, you generate API keys on your [account page](https://thiggle.com/account). Set the `THIGGLE_API_KEY` environment variable to your API key.
