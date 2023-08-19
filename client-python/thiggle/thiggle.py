@@ -2,7 +2,7 @@ import json
 
 import requests
 
-version = "0.0.1"
+version = "0.0.5"
 
 class API:
     def __init__(self, api_key):
