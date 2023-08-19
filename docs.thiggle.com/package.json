@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/thiggle/api.git"
   },
-  "author": "Matt Rickard <npm@matt-rickard.com",
+  "author": "Matt Rickard <npm@matt-rickard.com>",
   "license": "Apache2.0",
   "dependencies": {
     "next": "^13.0.6",
