@@ -7,10 +7,10 @@ Structured LLM APIs that always return deterministic results.
 
 ### Regex Completion API
 
-* **Regex Constraint**: Generate LLM output that always matches one or more regex patterns.
+* **Regex Constraint**: Generate LLM output that always matches a regex pattern.
 * **Deterministic**: Never returns unexpected or unparsable results.
 
-Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex patterns provided.
+Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex pattern provided.
 
 ### Categorization API
 
@@ -108,7 +108,7 @@ export THIGGLE_API_KEY=your-api-key
 If you are using a client library, you can pass the API key as a parameter to the client constructor. If you are using the REST API directly, you can pass the API key in the `Authorization` header (be sure to include the `Bearer` prefix).
 
   ```bash copy
-  curl -X POST "https://thiggle.com/api/v1/categorize" \
+  curl -X POST "https://api.thiggle.com/v1/categorize" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $THIGGLE_API_KEY" \
      -d '{

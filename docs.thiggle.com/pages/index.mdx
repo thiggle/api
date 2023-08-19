@@ -14,7 +14,7 @@ Thiggle is a set of specialized and structured LLM APIs.
 
 #### Regex Completion API
 
-Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex patterns provided.
+Given a prompt and a regex pattern, produces a constrained LLM text generation. Useful for generating specific semantic structures, typed primitives, or templates. The output is always deterministic and will always match the regex pattern provided.
 
 #### Regex Completion Quickstart
 
@@ -23,12 +23,12 @@ We'll use the prompt "Thiggle, the specialized and structured LLM API is an acro
 <Tabs items={['cURL', 'Python', 'TypeScript', 'Go']}>
 <Tab>
 ```bash
-curl -X POST "https://thiggle.com/api/v1/completion/regex" \
+curl -X POST "https://api.thiggle.com/v1/completion/regex" \
    -H "Content-Type: application/json" \
    -H "Authorization: Bearer $THIGGLE_API_KEY" \
    -d '{
        "prompt": "Thiggle, the specialized and structured LLM API is an acronym for ",
-       "patterns": "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+",
+       "pattern": "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+",
        "max_new_tokens": 20
    }'
 ```
@@ -174,7 +174,7 @@ Thiggle ships with clients in Python, Go, and TypeScript, but it's also easy to 
 <Tabs items={['cURL', 'Python', 'TypeScript', 'Go']}>
 <Tab>
   ```bash copy
-  curl -X POST "https://thiggle.com/api/v1/categorize" \
+  curl -X POST "https://api.thiggle.com/v1/categorize" \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer $THIGGLE_API_KEY" \
      -d '{

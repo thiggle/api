@@ -26,14 +26,14 @@ type CategorizeResponse struct {
 }
 
 type RegexCompletionRequest struct {
-	Prompt            string   `json:"prompt"`
-	Patterns          []string `json:"patterns"`
-	MaxNewTokens      int      `json:"max_new_tokens,omitempty"`
-	TopP              float64  `json:"top_p,omitempty"`
-	TopK              int      `json:"top_k,omitempty"`
-	Temperature       float64  `json:"temperature,omitempty"`
-	StopAfterMatch    Bool     `json:"stop_after_match,omitempty"`
-	RepetitionPenalty float64  `json:"repetition_penalty,omitempty"`
+	Prompt            string  `json:"prompt"`
+	Pattern           string  `json:"pattern"`
+	MaxNewTokens      int     `json:"max_new_tokens,omitempty"`
+	TopP              float64 `json:"top_p,omitempty"`
+	TopK              int     `json:"top_k,omitempty"`
+	Temperature       float64 `json:"temperature,omitempty"`
+	StopAfterMatch    Bool    `json:"stop_after_match,omitempty"`
+	RepetitionPenalty float64 `json:"repetition_penalty,omitempty"`
 }
 
 type RegexCompletionResponse struct {
@@ -74,8 +74,13 @@ func NewClient(apiKey string) *Client {
 const (
 	routeRegexCompletion       = "/v1/completion/regex"
 	routeContextFreeCompletion = "/v1/completion/cfg"
+	routeCompletion            = "/v1/completion"
 	routeCategorize            = "/v1/categorize"
 )
+
+func (c *Client) Completion(ctx context.Context, req *CompletionRequest) (*CompletionResponse, error) {
+	return post[CompletionRequest, CompletionResponse](ctx, c, routeCompletion, req)
+}
 
 func (c *Client) RegexCompletion(ctx context.Context, req *RegexCompletionRequest) (*RegexCompletionResponse, error) {
 	return post[RegexCompletionRequest, RegexCompletionResponse](ctx, c, routeRegexCompletion, req)

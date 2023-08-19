@@ -16,7 +16,7 @@ The request accepts a JSON body with the following properties:
 | Field               | Type                     | Description                                                                                          | Required |
 |---------------------|--------------------------|------------------------------------------------------------------------------------------------------|----------|
 | `prompt`            | string                   | The prompt to generate from.                                                                         | Yes      |
-| `patterns`          | string or string[]       | A single regex pattern or list of regex patterns to match.                                           | Yes      |
+| `pattern`          | string or string[]       | A single regex pattern to match.                                           | Yes      |
 | `max_new_tokens`    | integer                  | The maximum number of tokens to generate. Defaults to 5.                                             | No       |
 | `stop_after_match`  | boolean                  | Whether to stop generating after a match is found. Defaults to True.                                 | No       |
 | `top_k`             | integer                  | The number of highest probability vocabulary tokens to keep for top-k-filtering. Defaults to 50.     | No       |
@@ -29,7 +29,7 @@ The request accepts a JSON body with the following properties:
 ```json
 {
   "prompt": "This is a sample prompt",
-  "patterns": ["^sample.*", ".*prompt$"],
+  "pattern": ".*prompt$",
   "max_new_tokens": 10,
   "stop_after_match": false,
   "top_k": 50,
@@ -49,7 +49,7 @@ If there was a problem with the request, you will receive an error message inste
 
 | Field             | Type     | Description                                   |
 |-------------------|----------|-----------------------------------------------|
-| `completion`      | string   | The generated text that matches the patterns. |
+| `completion`      | string   | The generated text that matches the pattern. |
 | `tokens_generated`| integer  | Number of tokens generated in the response.   |
 | `stop_reason`      | string  | The reason the generation was stopped, if applicable. Either `pattern_match` or `token_limit`.           |
 

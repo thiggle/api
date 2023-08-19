@@ -16,12 +16,39 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestIntegrationCompletion(t *testing.T) {
+	req := &CompletionRequest{
+		Prompt: "the input is 10 tokens long, really!",
+		// Model:  MustNewStringOrSlice("gpt-4"),
+		// Model: MustNewStringOrSlice([]string{"gpt-4", "gpt-4-0613", "gpt-4-0314"}),
+		Model:       MustNewStringOrSlice([]string{"llama-2-70b-chat", "text-davinci-003"}),
+		MaxTokens:   10,
+		Temperature: 0.5,
+	}
+	resp, err := client.Completion(context.Background(), req)
+	if err != nil {
+		t.Fatal("unexpected error", err)
+	}
+
+	fmt.Printf("id=%s object=%s created=%s\n", resp.ID, resp.Object, resp.Created)
+	if resp.Usage != nil {
+		fmt.Printf("usage.completion_tokens=%d usage.prediction_time_ms=%d usage.total_tokens=%d\n", resp.Usage.CompletionTokens, resp.Usage.PredictionTimeMs, resp.Usage.TotalTokens)
+	}
+	for _, choice := range resp.Choices {
+		fmt.Println("---")
+		fmt.Printf("model=%s text=%s created=%d finish_reason=%s\n", choice.Model, choice.Text, choice.Created, choice.FinishReason)
+		if choice.Usage != nil {
+			fmt.Printf("usage.completion_tokens=%d usage.prediction_time_ms=%d usage.total_tokens=%d\n", choice.Usage.CompletionTokens, choice.Usage.PredictionTimeMs, choice.Usage.TotalTokens)
+		}
+		fmt.Println("---")
+	}
+
+}
+
 func TestIntegrationRegexCompletion(t *testing.T) {
 	req := &RegexCompletionRequest{
-		Prompt: "ReLLM, the best way to get structured data out of LLMs, is an acronym for ",
-		Patterns: []string{
-			"Re[a-z]+ L[a-z]+ L[a-z]+ M[a-z]+",
-		},
+		Prompt:       "ReLLM, the best way to get structured data out of LLMs, is an acronym for ",
+		Pattern:      "Re[a-z]+ L[a-z]+ L[a-z]+ M[a-z]+",
 		MaxNewTokens: 5,
 	}
 

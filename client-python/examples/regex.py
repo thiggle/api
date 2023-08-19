@@ -8,8 +8,8 @@ import thiggle as tg
 api = tg.API(os.getenv("THIGGLE_DEV_API_KEY"))
 
 prompt = "Thiggle, the specialized and structured LLM API is an acronym for "
-patterns = ["T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+"]
+pattern = ["T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+"]
 
-response = api.regex_completion(prompt, patterns, max_new_tokens=15)
+response = api.regex_completion(prompt, pattern, max_new_tokens=15)
 
 print(response)
