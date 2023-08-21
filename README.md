@@ -1,5 +1,7 @@
 ## [thiggle.com](https://thiggle.com) API
 
+#### More documentation at [docs.thiggle.com](https://docs.thiggle.com)
+
 Structured LLM APIs that always return deterministic results.
 
 - [LLM Model API Gateway](#llm-model-api-gateway) -- Call over 20+ LLMs with a single API
@@ -79,7 +81,6 @@ A simple structured API to run categorization tasks with an LLM.
 * [Labeling training data](#labeling-training-data)
 * [Sentiment analysis](#sentiment-analysis)
 
-#### More documentation at [docs.thiggle.com](https://docs.thiggle.com)
 
 ### Quickstart
 
