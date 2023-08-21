@@ -1,0 +1,96 @@
+# /v1/completion
+
+This endpoint generates completions based on the provided prompt and parameters.
+
+## Request: `POST /v1/completion`
+
+### Headers
+
+- `Content-Type: application/json`
+- `Authorization: Bearer <your_api_key>`
+
+### Body
+
+The request accepts a JSON body with the following properties:
+
+| Field              | Type                | Description                                                                                     | Required |
+|--------------------|---------------------|-------------------------------------------------------------------------------------------------|----------|
+| `prompt`           | string              | The prompt to generate from.                                                                    | Yes      |
+| `model`            | string or list      | The model name(s) to use for completion. Can be a single model name or a list of model names.   | Yes       |
+| `max_tokens`       | integer             | Maximum number of tokens in the response.                                                       | No       |
+| `temperature`      | float               | Controls randomness in the response. Ranges from 0 to 1.                                       | No       |
+| `top_p`            | float               | Controls the nucleus sampling method. Ranges from 0 to 1.                                      | No       |
+| `stop`             | list of strings     | List of strings that indicates stopping tokens.                                                | No       |
+| `presence_penalty` | float               | Affects the presence of tokens in the response. Ranges from -2 to 2.                           | No       |
+| `frequency_penalty`| float               | Affects the frequency of tokens in the response. Ranges from -2 to 2.                          | No       |
+
+#### Supported Models
+* llama-2-70b-chat
+* llama-2-70b
+* llama-2-13b-chat
+* llama-2-7b
+* llama-2-7b-chat
+* gpt-4
+* gpt-4-0613
+* gpt-4-0314
+* gpt-4-32k
+* gpt-4-32k-0613
+* gpt-4-32k-0314
+* gpt-3.5-turbo
+* gpt-3.5-turbo-0613
+* gpt-3.5-turbo-0301
+* gpt-3.5-turbo-16k
+* gpt-3.5-turbo-16k-0613
+* cohere-command
+* cohere-command-light
+* cohere-command-nightly
+* text-davinci-00{3,2,1}
+
+#### Example
+
+```json
+{
+  "prompt": "Once upon a time",
+  "model": ["gpt-4", "llama-2-70b"],
+  "max_tokens": 50,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "stop": ["."],
+  "presence_penalty": 0.5,
+  "frequency_penalty": -0.5
+}
+```
+## Response
+
+When a request to the `/v1/completion` endpoint is successful, the response will contain the following fields:
+
+| Field         | Type                          | Description                                                                                                          |
+|---------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `id`          | UUID                          | A unique identifier for the completion request.                                                                      |
+| `object`      | string                        | The type of object returned, in this case, it would typically represent a completion type object.                    |
+| `created`     | time (ISO 8601 format)        | The timestamp of when the completion was generated.                                                                  |
+| `choices`     | array of `CompletionChoice`   | An array of completion choices. Each choice contains generated text and other related information.                   |
+| `usage`       | `Usage` object                | Provides information about the number of tokens used in the prompt, completion, and the prediction time in milliseconds. |
+
+### CompletionChoice
+
+Each `CompletionChoice` in the `choices` array has the following fields:
+
+| Field           | Type          | Description                                                                           |
+|-----------------|---------------|---------------------------------------------------------------------------------------|
+| `text`          | string        | The generated completion text.                                                        |
+| `created`       | int           | The timestamp of when the choice was created.                                         |
+| `model`         | string        | The name of the model that was used to generate this choice.                           |
+| `finish_reason` | string        | The reason the generation for this choice was finished (e.g., "stop token reached").  |
+| `usage`         | `Usage` object| Provides information about the number of tokens used for this specific choice.        |
+
+### Usage
+
+The `Usage` object contains information about token usage and prediction time:
+
+| Field                | Type        | Description                                                                                                      |
+|----------------------|-------------|------------------------------------------------------------------------------------------------------------------|
+| `prompt_tokens`      | int         | The number of tokens in the provided prompt.                                                                     |
+| `prediction_time_ms` | int64       | The time taken, in milliseconds, to generate the completion.                                                     |
+| `completion_tokens`  | int         | The number of tokens in the generated completion.                                                               |
+| `total_tokens`       | int         | The total number of tokens, including both prompt and completion.               
