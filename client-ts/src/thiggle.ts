@@ -1,4 +1,4 @@
-const thiggleVersion = "0.0.5";
+const thiggleVersion = "0.0.6";
 
 export type CategorizeRequest = {
   prompt: string;

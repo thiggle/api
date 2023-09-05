@@ -1,33 +1,33 @@
 {
-  "name": "@thiggle/client",
-  "version": "0.0.5",
-  "description": "A TypeScript client for the Thiggle API",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "bundle": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "npm run build && npm run bundle"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thiggle/api.git"
-  },
   "author": "Matt Rickard",
-  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/thiggle/api/issues"
-  },
-  "homepage": "https://thiggle.com",
-  "devDependencies": {
-    "typescript": "^4.4.3"
   },
   "dependencies": {
     "esbuild": "^0.18.11",
     "rollup": "^3.26.2",
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-esbuild": "^5.0.0"
-  }
+  },
+  "description": "A TypeScript client for the Thiggle API",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  },
+  "homepage": "https://thiggle.com",
+  "license": "Apache-2.0",
+  "main": "dist/index.js",
+  "name": "@thiggle/client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiggle/api.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "bundle": "rollup -c",
+    "prepublish": "npm run build && npm run bundle",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.0.6"
 }
