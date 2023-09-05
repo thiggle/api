@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -57,6 +60,28 @@ type ContextFreeCompletionResponse struct {
 	Completion      string `json:"completion"`
 	TokensGenerated int    `json:"tokens_generated"`
 	StopReason      string `json:"stop_reason"`
+}
+
+type TypedCompletionRequest struct {
+	UserID           uuid.UUID `json:"user_id"`
+	Prompt           string    `json:"prompt"`
+	MaxTokens        *uint     `json:"max_tokens,omitempty"`
+	Temperature      *float64  `json:"temperature,omitempty"`
+	TopP             *float64  `json:"top_p,omitempty"`
+	Stop             []string  `json:"stop,omitempty"`
+	PresencePenalty  *float64  `json:"presence_penalty,omitempty"`
+	FrequencyPenalty *float64  `json:"frequency_penalty,omitempty"`
+
+	Schema   string `json:"schema"`
+	TypeName string `json:"type_name"`
+}
+
+type TypedCompletionResponse struct {
+	ID      uuid.UUID           `json:"id"`
+	Object  string              `json:"object"`
+	Created time.Time           `json:"created"`
+	Choices []*CompletionChoice `json:"choices"`
+	Usage   *Usage              `json:"usage"`
 }
 
 type Client struct {

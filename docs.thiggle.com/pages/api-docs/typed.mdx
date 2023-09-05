@@ -1,0 +1,101 @@
+# /v1/completion/typed
+
+This endpoint generates Language Model completions that are typed according to the specified schema and type name. This allows a greater level of customization and control over the completions generated.
+
+## Request: `POST /v1/completion/typed`
+
+### Headers
+
+- `Content-Type: application/json`
+- `Authorization: Bearer <your_api_key>`
+
+### Body
+
+The request accepts a JSON body with the following properties:
+
+| Field               | Type      | Description                                                                                                                   | Required |
+| ------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `user_id`           | uuid.UUID | The unique identifier for the user.                                                                                           | Yes      |
+| `prompt`            | string    | The prompt to generate from.                                                                                                  | Yes      |
+| `schema`            | string    | A set of exported TypeScript definitions.                                                                                     | Yes      |
+| `type_name`         | string    | The type name for the typed completion. Must be part of the schema.                                                           | Yes      |
+| `max_tokens`        | uint      | The maximum number of tokens to generate.                                                                                     | No       |
+| `temperature`       | float64   | The value used to modulate the next token probabilities.                                                                      | No       |
+| `top_p`             | float64   | If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. | No       |
+| `stop`              | []string  | A list of strings that, when generated, will stop the completion.                                                             | No       |
+| `presence_penalty`  | float64   | The parameter for presence penalty.                                                                                           | No       |
+| `frequency_penalty` | float64   | The parameter for frequency penalty.                                                                                          | No       |
+
+#### Important
+
+Type definitions in the **schema** must be exported. For example:
+
+```typescript
+export interface BasicSentence {
+  text: string;
+}
+```
+
+**type_name** must be a valid type name in the **schema**. For example:
+
+```typescript
+export interface BasicSentence {
+  text: string;
+}
+```
+
+In this case, `BasicSentence` is a valid **type_name**.
+
+#### Example
+
+```json
+{
+  "user_id": "a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
+  "prompt": "Write a sentence",
+  "max_tokens": 20,
+  "temperature": 0.8,
+  "top_p": 0.9,
+  "stop": ["."],
+  "presence_penalty": 0.6,
+  "frequency_penalty": 0.5,
+  "schema": "export interface BasicSentence {
+  text: string;
+}",
+  "type_name": "BasicSentence"
+}
+```
+
+## Response
+
+When a request to the `/v1/completion/typed` endpoint is successful, the response will contain the following fields:
+
+| Field     | Type                        | Description                                                                                                              |
+| --------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `id`      | UUID                        | A unique identifier for the completion request.                                                                          |
+| `object`  | string                      | The type of object returned                                                                                              |
+| `created` | time (ISO 8601 format)      | The timestamp of when the completion was generated.                                                                      |
+| `choices` | array of `CompletionChoice` | An array of completion choices. Each choice contains generated text and other related information.                       |
+| `usage`   | `Usage` object              | Provides information about the number of tokens used in the prompt, completion, and the prediction time in milliseconds. |
+
+### CompletionChoice
+
+Each `CompletionChoice` in the `choices` array has the following fields:
+
+| Field           | Type           | Description                                                                          |
+| --------------- | -------------- | ------------------------------------------------------------------------------------ |
+| `text`          | string         | The generated completion text.                                                       |
+| `created`       | int            | The timestamp of when the choice was created.                                        |
+| `model`         | string         | The name of the model that was used to generate this choice.                         |
+| `finish_reason` | string         | The reason the generation for this choice was finished (e.g., "stop token reached"). |
+| `usage`         | `Usage` object | Provides information about the number of tokens used for this specific choice.       |
+
+### Usage
+
+The `Usage` object contains information about token usage and prediction time:
+
+| Field                | Type  | Description                                                       |
+| -------------------- | ----- | ----------------------------------------------------------------- |
+| `prompt_tokens`      | int   | The number of tokens in the provided prompt.                      |
+| `prediction_time_ms` | int64 | The time taken, in milliseconds, to generate the completion.      |
+| `completion_tokens`  | int   | The number of tokens in the generated completion.                 |
+| `total_tokens`       | int   | The total number of tokens, including both prompt and completion. |

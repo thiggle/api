@@ -1,6 +1,6 @@
-import { Tab, Tabs } from 'nextra-theme-docs'
+import { Tab, Tabs } from "nextra-theme-docs";
 
-export const baseURL = 'https://thiggle.com/api'
+export const baseURL = "https://thiggle.com/api";
 
 Thiggle is a set of specialized and structured LLM APIs.
 
@@ -12,6 +12,7 @@ Thiggle is a set of specialized and structured LLM APIs.
 
 - [Regex Completion API](#regex-completion-api)
 - [Context-Free Grammar Completion API](#context-free-grammar-completion-api)
+- [Typed Completion API](/api-docs/typed)
 
 #### Regex Completion API
 
@@ -46,6 +47,7 @@ api = tg.API(os.getenv("THIGGLE_API_KEY"))
 response = api.regex_completion("Thiggle, the specialized and structured LLM API is an acronym for ", "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+", 20)
 print(response)
 ```
+
 </Tab>
 <Tab>
 <Tabs items={['npm', 'yarn', 'pnpm']}>
@@ -67,12 +69,17 @@ pnpm add @thiggle/client
 </Tabs>
 
 ```typescript
-import Thiggle from '@thiggle/client';
+import Thiggle from "@thiggle/client";
 
 const api = new Thiggle(process.env.THIGGLE_API_KEY);
-const response = await api.regexCompletion("Thiggle, the specialized and structured LLM API is an acronym for ", "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+", 20);
+const response = await api.regexCompletion(
+  "Thiggle, the specialized and structured LLM API is an acronym for ",
+  "T[a-z]+ H[a-z]+ I[a-z]+ G[a-z]+ G[a-z]+ L[a-z]+ E[a-z]+",
+  20
+);
 console.log(response);
 ```
+
 </Tab>
 <Tab>
 ```bash
@@ -98,12 +105,13 @@ func main() {
   fmt.Println(response)
 }
 ```
+
 </Tab>
 </Tabs>
 
-```json 
+```json
 {
-  "completion": "Transformers Hugging Inference Generally Greatly Libraries Engine", 
+  "completion": "Transformers Hugging Inference Generally Greatly Libraries Engine",
   "tokens_generated": 15
 }
 ```
@@ -114,7 +122,7 @@ Given a prompt and a context-free grammar, produces a constrained LLM text gener
 
 #### Context-Free Grammar Completion Quickstart
 
-In this example, we'll define a [LALR grammar in Lark format](https://lark-parser.readthedocs.io/en/latest/grammar.html) for specifying palindromes (strings that reads the same backwards and forwards). 
+In this example, we'll define a [LALR grammar in Lark format](https://lark-parser.readthedocs.io/en/latest/grammar.html) for specifying palindromes (strings that reads the same backwards and forwards).
 
 (Remembering your computational theory, generating arbitrary-length palindromes is impossible with just regular expressions)
 
@@ -163,10 +171,11 @@ print(response)
 ### The Categorization API
 
 Thiggle's categorization API is a simple API that uses LLMs to categorize anything based on a prompt. It always returns structured JSON, and only returns the categories that you provide. Some example use cases include:
-* [Building block for building higher-level AI agents](#ai-agents)
-* [Answering multiple choice questions](#multiple-choice-questions)
-* [Labeling training data](#labeling-training-data)
-* [Sentiment analysis](#sentiment-analysis)
+
+- [Building block for building higher-level AI agents](#ai-agents)
+- [Answering multiple choice questions](#multiple-choice-questions)
+- [Labeling training data](#labeling-training-data)
+- [Sentiment analysis](#sentiment-analysis)
 
 #### Categorization Quickstart
 
@@ -189,13 +198,14 @@ Thiggle ships with clients in Python, Go, and TypeScript, but it's also easy to 
 pip install thiggle
 ```
 
- ```python copy
+```python copy
 import thiggle as tg
 
 api = tg.API(os.getenv("THIGGLE_API_KEY"))
 response = api.categorize("What animal barks?", ["dog", "cat", "bird", "fish"])
 print(response)
-  ```
+```
+
   </Tab>
   <Tab>
   <Tabs items={['npm', 'yarn', 'pnpm']}>
@@ -216,65 +226,85 @@ pnpm add @thiggle/client
 </Tab>
 </Tabs>
 
-  ```typescript copy
-  import Thiggle from '@thiggle/client';
+```typescript copy
+import Thiggle from "@thiggle/client";
 
-  const api = new Thiggle(process.env.THIGGLE_API_KEY);
-  const response = await api.categorize("What animal barks?", ["dog", "cat", "bird", "fish"]);
-  console.log(response);
-  ```
+const api = new Thiggle(process.env.THIGGLE_API_KEY);
+const response = await api.categorize("What animal barks?", [
+  "dog",
+  "cat",
+  "bird",
+  "fish",
+]);
+console.log(response);
+```
+
   </Tab>
   <Tab>
   ```bash copy
   go get -u github.com/thiggle/api
   ```
 
-  ```go copy
-  package main
+```go copy
+package main
 
-  import (
-    "fmt"
-    "os"
+import (
+  "fmt"
+  "os"
 
-    "github.com/thiggle/api"
-  )
+  "github.com/thiggle/api"
+)
 
-  func main() {
-    client := api.NewClient(os.Getenv("THIGGLE_API_KEY"))
-    response, err := client.Categorize("What animal barks?", []string{"dog", "cat", "bird", "fish"})
-    if err != nil {
-      panic(err)
-    }
-    fmt.Println(response)
+func main() {
+  client := api.NewClient(os.Getenv("THIGGLE_API_KEY"))
+  response, err := client.Categorize("What animal barks?", []string{"dog", "cat", "bird", "fish"})
+  if err != nil {
+    panic(err)
   }
-  ```
+  fmt.Println(response)
+}
+```
+
   </Tab>
 </Tabs>
 
 #### Examples
 
 ##### AI Agents
+
 Use the categorization API to choose the relevant tools to complete the task. Use this as a reliable building block for higher-order AI agents. Never worry about the API returning extraneous text or unknown categories that break your agent.
+
 ```json
 {
   "prompt": "What tools do I need to complete the following task? Task: find the best restaurant in San Francisco. Tools:",
-  "categories": ["google-maps-api", "python-repl", "calculator", "yelp-api", "ffmpeg"]
+  "categories": [
+    "google-maps-api",
+    "python-repl",
+    "calculator",
+    "yelp-api",
+    "ffmpeg"
+  ]
 }
 ```
+
 ```json
 {
   "choices": ["google-maps-api", "yelp-api"]
 }
 ```
+
 ##### Multiple-Choice Questions
-Answer multiple-choice questions. For questions with more than one correct answer, use the `allow_multiple_classes` flag. 
+
+Answer multiple-choice questions. For questions with more than one correct answer, use the `allow_multiple_classes` flag.
+
 ```json
 {
   "prompt": "What animals have four legs?",
   "categories": ["cat", "dog", "bird", "fish", "elephant", "snake"],
-  "allow_multiple_classes": true,
+  "allow_multiple_classes": true
 }
 ```
+
 ```json
 {
   "choices": ["cat", "dog", "elephant"]
@@ -282,22 +312,34 @@ Answer multiple-choice questions. For questions with more than one correct answe
 ```
 
 ##### Labeling Training Data
+
 You can use the categorization API to label text for training data. For example, you could use it to label text for a text classifier. This example bins text into different buckets: ['finance', 'sports', 'politics', 'science', 'technology', 'entertainment', 'health', 'other'].
+
 ```json
 {
   "prompt": "What category does this text belong to? Text: The Dow Jones Industrial Average fell 200 points on Monday.",
-  "categories": ["finance", "sports", "politics", "science", "technology", "entertainment", "health", "other"]
+  "categories": [
+    "finance",
+    "sports",
+    "politics",
+    "science",
+    "technology",
+    "entertainment",
+    "health",
+    "other"
+  ]
 }
 ```
+
 ```json
 {
   "choices": ["finance"]
 }
 ```
 
-
 ##### Sentiment Analysis
-Classify any text into sentiment classes. 
+
+Classify any text into sentiment classes.
 
 ```json
 {
@@ -307,6 +349,7 @@ Classify any text into sentiment classes.
   "categories": ["positive", "negative"]
 }
 ```
+
 ```json
 {
   "choices": ["negative"]

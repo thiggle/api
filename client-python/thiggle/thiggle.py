@@ -4,25 +4,81 @@ import requests
 
 version = "0.0.5"
 
+
 class API:
     def __init__(self, api_key):
         self.api_key = api_key
         self.base_url = "https://api.thiggle.com"
         self.headers = {
-            'Authorization': f'Bearer {self.api_key}',
-            'Content-Type': 'application/json',
-            'User-Agent': f'thiggle-client-py/{version}'
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "User-Agent": f"thiggle-client-py/{version}",
         }
-    
-    def completion(self, 
-              prompt,
-              model=None,
-              max_tokens=None,
-              temperature=None,
-              top_p=None,
-              stop=None,
-              presence_penalty=None,
-              frequency_penalty=None):
+
+    def typed_completion(
+        self,
+        prompt,
+        schema,
+        type_name,
+        max_tokens=None,
+        temperature=None,
+        top_p=None,
+        stop=None,
+        presence_penalty=None,
+        frequency_penalty=None,
+    ):
+        """
+        Generate a completion based on the given prompt.
+
+        :param prompt: The prompt to complete.
+        :param schema: A set of exported TypeScript types to use for completion.
+        :param type_name: The name of the type to use for completion.
+        :param model: The model name(s) to use for completion. Can be a string or a list of strings.
+        :param max_tokens: Maximum number of tokens in the response.
+        :param temperature: Controls randomness in the response. Ranges from 0 to 1.
+        :param top_p: Controls the nucleus sampling method. Ranges from 0 to 1.
+        :param stop: List of strings that indicates stopping tokens.
+        :param presence_penalty: Affects the presence of tokens in the response. Ranges from -2 to 2.
+        :param frequency_penalty: Affects the frequency of tokens in the response. Ranges from -2 to 2.
+        """
+
+        payload = {
+            "prompt": prompt,
+            "schema": schema,
+            "type_name": type_name,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "top_p": top_p,
+            "stop": stop,
+            "presence_penalty": presence_penalty,
+            "frequency_penalty": frequency_penalty,
+        }
+
+        # Removing None values from the payload
+        payload = {k: v for k, v in payload.items() if v is not None}
+
+        response = requests.post(
+            f"{self.base_url}/v1/completion",
+            headers=self.headers,
+            data=json.dumps(payload),
+        )
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()
+
+    def completion(
+        self,
+        prompt,
+        model=None,
+        max_tokens=None,
+        temperature=None,
+        top_p=None,
+        stop=None,
+        presence_penalty=None,
+        frequency_penalty=None,
+    ):
         """
         Generate a completion based on the given prompt.
 
@@ -44,16 +100,16 @@ class API:
             "top_p": top_p,
             "stop": stop,
             "presence_penalty": presence_penalty,
-            "frequency_penalty": frequency_penalty
+            "frequency_penalty": frequency_penalty,
         }
 
         # Removing None values from the payload
         payload = {k: v for k, v in payload.items() if v is not None}
 
         response = requests.post(
-            f'{self.base_url}/v1/completion',
+            f"{self.base_url}/v1/completion",
             headers=self.headers,
-            data=json.dumps(payload)
+            data=json.dumps(payload),
         )
 
         if response.status_code == 200:
@@ -61,11 +117,13 @@ class API:
         else:
             response.raise_for_status()
 
-    def categorize(self, 
-                   prompt, 
-                   categories,
-                   allow_null_category=False,
-                   allow_multiple_classes=False):
+    def categorize(
+        self,
+        prompt,
+        categories,
+        allow_null_category=False,
+        allow_multiple_classes=False,
+    ):
         """
         Categorize a prompt into one or more categories.
 
@@ -79,13 +137,13 @@ class API:
             "prompt": prompt,
             "categories": categories,
             "allow_null_category": allow_null_category,
-            "allow_multiple_classes": allow_multiple_classes
+            "allow_multiple_classes": allow_multiple_classes,
         }
 
         response = requests.post(
-            f'{self.base_url}/v1/categorize',
+            f"{self.base_url}/v1/categorize",
             headers=self.headers,
-            data=json.dumps(payload)
+            data=json.dumps(payload),
         )
 
         if response.status_code == 200:
@@ -93,17 +151,17 @@ class API:
         else:
             response.raise_for_status()
 
-    def regex_completion(self, 
-                         prompt, 
-                         pattern, 
-                         max_new_tokens=5, 
-                         stop_after_match=True,
-                         temperature=1.0,
-                         top_p=1.0,
-                         top_k=50,
-                         repetition_penalty=1.0,
-                         ):
-        
+    def regex_completion(
+        self,
+        prompt,
+        pattern,
+        max_new_tokens=5,
+        stop_after_match=True,
+        temperature=1.0,
+        top_p=1.0,
+        top_k=50,
+        repetition_penalty=1.0,
+    ):
         """
         Generate LLM completions that match regex patterns.
 
@@ -125,13 +183,13 @@ class API:
             "temperature": temperature,
             "top_p": top_p,
             "top_k": top_k,
-            "repetition_penalty": repetition_penalty
+            "repetition_penalty": repetition_penalty,
         }
 
         response = requests.post(
-            f'{self.base_url}/v1/completion/regex',
+            f"{self.base_url}/v1/completion/regex",
             headers=self.headers,
-            data=json.dumps(payload)
+            data=json.dumps(payload),
         )
 
         if response.status_code == 200:
@@ -139,16 +197,17 @@ class API:
         else:
             response.raise_for_status()
 
-    def cfg_completion(self,
-                       prompt,
-                       grammar,
-                       max_new_tokens=5,
-                       stop_after_match=True,
-                       temperature=1.0,
-                       top_p=1.0,
-                       top_k=50,
-                       repetition_penalty=1.0,
-                       ):
+    def cfg_completion(
+        self,
+        prompt,
+        grammar,
+        max_new_tokens=5,
+        stop_after_match=True,
+        temperature=1.0,
+        top_p=1.0,
+        top_k=50,
+        repetition_penalty=1.0,
+    ):
         """
         Generate LLM completions that match CFG grammar rules.
 
@@ -170,17 +229,16 @@ class API:
             "temperature": temperature,
             "top_p": top_p,
             "top_k": top_k,
-            "repetition_penalty": repetition_penalty
+            "repetition_penalty": repetition_penalty,
         }
 
         response = requests.post(
-            f'{self.base_url}/v1/completion/cfg',
+            f"{self.base_url}/v1/completion/cfg",
             headers=self.headers,
-            data=json.dumps(payload)
+            data=json.dumps(payload),
         )
 
         if response.status_code == 200:
             return response.json()
         else:
             response.raise_for_status()
-

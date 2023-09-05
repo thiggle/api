@@ -1,6 +1,7 @@
 {
   "categorize": "/v1/categorize",
-  "regex": "/v1/completion/regex",
   "cfg": "/v1/completion/cfg",
-  "completion": "/v1/completion"
+  "completion": "/v1/completion",
+  "regex": "/v1/completion/regex",
+  "typed": "/v1/completion/typed"
 }
