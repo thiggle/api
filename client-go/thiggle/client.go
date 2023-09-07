@@ -98,6 +98,7 @@ func NewClient(apiKey string) *Client {
 
 const (
 	routeRegexCompletion       = "/v1/completion/regex"
+	routeTypedCompletion       = "/v1/completion/typed"
 	routeContextFreeCompletion = "/v1/completion/cfg"
 	routeCompletion            = "/v1/completion"
 	routeCategorize            = "/v1/categorize"
@@ -117,6 +118,10 @@ func (c *Client) ContextFreeCompletion(ctx context.Context, req *ContextFreeComp
 
 func (c *Client) Categorize(ctx context.Context, req *CategorizeRequest) (*CategorizeResponse, error) {
 	return post[CategorizeRequest, CategorizeResponse](ctx, c, routeCategorize, req)
+}
+
+func (c *Client) TypedCompletion(ctx context.Context, req *TypedCompletionRequest) (*TypedCompletionResponse, error) {
+	return post[TypedCompletionRequest, TypedCompletionResponse](ctx, c, routeTypedCompletion, req)
 }
 
 func post[Request any, Response any](ctx context.Context, c *Client, url string, req *Request) (*Response, error) {

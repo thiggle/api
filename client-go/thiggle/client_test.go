@@ -16,6 +16,22 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestTypedCompletion(t *testing.T) {
+	req := &TypedCompletionRequest{
+		Prompt:   "The best way to get structured data out of LLMs is to use ReLLM, which is an acronym for ",
+		Schema:   "export type Message = { text: string }",
+		TypeName: "Message",
+	}
+
+	resp, err := client.TypedCompletion(context.Background(), req)
+	if err != nil {
+		t.Fatal("unexpected error", err)
+	}
+
+	fmt.Println(resp)
+
+}
+
 func TestIntegrationCompletion(t *testing.T) {
 	req := &CompletionRequest{
 		Prompt:      "the input is 10 tokens long, really!",

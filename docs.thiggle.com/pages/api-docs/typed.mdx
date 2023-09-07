@@ -13,18 +13,17 @@ This endpoint generates Language Model completions that are typed according to t
 
 The request accepts a JSON body with the following properties:
 
-| Field               | Type      | Description                                                                                                                   | Required |
-| ------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `user_id`           | uuid.UUID | The unique identifier for the user.                                                                                           | Yes      |
-| `prompt`            | string    | The prompt to generate from.                                                                                                  | Yes      |
-| `schema`            | string    | A set of exported TypeScript definitions.                                                                                     | Yes      |
-| `type_name`         | string    | The type name for the typed completion. Must be part of the schema.                                                           | Yes      |
-| `max_tokens`        | uint      | The maximum number of tokens to generate.                                                                                     | No       |
-| `temperature`       | float64   | The value used to modulate the next token probabilities.                                                                      | No       |
-| `top_p`             | float64   | If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. | No       |
-| `stop`              | []string  | A list of strings that, when generated, will stop the completion.                                                             | No       |
-| `presence_penalty`  | float64   | The parameter for presence penalty.                                                                                           | No       |
-| `frequency_penalty` | float64   | The parameter for frequency penalty.                                                                                          | No       |
+| Field               | Type     | Description                                                                                                                   | Required |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `prompt`            | string   | The prompt to generate from.                                                                                                  | Yes      |
+| `schema`            | string   | A set of exported TypeScript definitions.                                                                                     | Yes      |
+| `type_name`         | string   | The type name for the typed completion. Must be part of the schema.                                                           | Yes      |
+| `max_tokens`        | uint     | The maximum number of tokens to generate.                                                                                     | No       |
+| `temperature`       | float64  | The value used to modulate the next token probabilities.                                                                      | No       |
+| `top_p`             | float64  | If set to float < 1, only the most probable tokens with probabilities that add up to top_p or higher are kept for generation. | No       |
+| `stop`              | []string | A list of strings that, when generated, will stop the completion.                                                             | No       |
+| `presence_penalty`  | float64  | The parameter for presence penalty.                                                                                           | No       |
+| `frequency_penalty` | float64  | The parameter for frequency penalty.                                                                                          | No       |
 
 #### Important
 
@@ -50,7 +49,6 @@ In this case, `BasicSentence` is a valid **type_name**.
 
 ```json
 {
-  "user_id": "a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
   "prompt": "Write a sentence",
   "max_tokens": 20,
   "temperature": 0.8,
