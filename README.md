@@ -1,6 +1,15 @@
-## [thiggle.com](https://thiggle.com) API
+<h1 align="center">
+  <font size="28">
+  <b>
+    thiggle
+  </b>
+  </font>
+</h1>
 
-#### More documentation at [docs.thiggle.com](https://docs.thiggle.com)
+<h4 align="center">
+  <a href="https://docs.thiggle.com">API Docs</a> |
+  <a href="https://thiggle.com">Website</a>
+</h4>
 
 Structured LLM APIs that always return deterministic results.
 
